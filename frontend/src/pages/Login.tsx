@@ -31,7 +31,26 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      // Redirect based on user role
+      switch (user.role) {
+        case 'patient':
+          navigate('/dashboard');
+          break;
+        case 'doctor':
+          navigate('/doctor-dashboard');
+          break;
+        case 'pharmacy':
+          navigate('/pharmacy-dashboard');
+          break;
+        case 'admin':
+          navigate('/admin-dashboard');
+          break;
+        case 'efda':
+          navigate('/efda-dashboard');
+          break;
+        default:
+          navigate('/dashboard');
+      }
     }
   }, [user, navigate]);
 
@@ -50,7 +69,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       await dispatch(login(formData)).unwrap();
-      navigate('/dashboard');
+      // Navigation is handled by the useEffect above based on user role
     } catch (error) {
       // Error is handled by the slice
     }

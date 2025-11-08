@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import api from '../services/api';
 
 interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   role: 'patient' | 'doctor' | 'pharmacy' | 'efda' | 'admin';
@@ -66,8 +66,15 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.user;
+        state.user = {
+          _id: action.payload._id,
+          name: action.payload.name,
+          email: action.payload.email,
+          role: action.payload.role
+        };
         state.token = action.payload.token;
+        localStorage.setItem('token', action.payload.token);
+        localStorage.setItem('user', JSON.stringify(state.user));
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -81,6 +88,8 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        localStorage.setItem('token', action.payload.token);
+        localStorage.setItem('user', JSON.stringify(action.payload.user));
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;

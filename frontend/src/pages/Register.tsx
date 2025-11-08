@@ -36,7 +36,26 @@ const Register: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      // Redirect based on user role
+      switch (user.role) {
+        case 'patient':
+          navigate('/dashboard');
+          break;
+        case 'doctor':
+          navigate('/doctor-dashboard');
+          break;
+        case 'pharmacy':
+          navigate('/pharmacy-dashboard');
+          break;
+        case 'admin':
+          navigate('/admin-dashboard');
+          break;
+        case 'efda':
+          navigate('/efda-dashboard');
+          break;
+        default:
+          navigate('/dashboard');
+      }
     }
   }, [user, navigate]);
 
@@ -68,7 +87,7 @@ const Register: React.FC = () => {
     try {
       const { confirmPassword, ...registerData } = formData;
       await dispatch(register(registerData)).unwrap();
-      navigate('/dashboard');
+      // Navigation is handled by the useEffect above based on user role
     } catch (error) {
       // Error is handled by the slice
     }

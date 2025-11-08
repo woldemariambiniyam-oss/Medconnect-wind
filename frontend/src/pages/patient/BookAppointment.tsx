@@ -103,7 +103,7 @@ const BookAppointment: React.FC = () => {
     try {
       const appointmentData = {
         doctorId,
-        patientId: user.id,
+patientId: user._id,
         ...form,
         status: 'scheduled',
       };
